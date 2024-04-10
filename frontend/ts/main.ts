@@ -14,7 +14,6 @@ const worklists:WorkExperienceList = new WorkExperienceList();
 
 async function init() {
     const experiences = await worklists.getalldata();
-    console.log("ex",experiences)
     experiences.forEach(element => {
         addrow(element);
     });
@@ -36,9 +35,23 @@ function addrow(data:workexperience)
         const p1 = document.createElement('p');
         p1.textContent = data.Description;
         const p2 = document.createElement('p');
-        p1.textContent = data.StartDate+"-"+data.EndDate;
+        p2.textContent = data.StartDate+"-"+data.EndDate;
         details.appendChild(summary);
         details.appendChild(p1);
+        details.appendChild(p2);
+
+        
+        //skapar cell och skapar knapp. skriver värde till föregående cell samt uppdaterar objekt.  
+        let deletebutton:Element = document.createElement("button");
+        deletebutton.textContent = "Delete"
+        deletebutton.addEventListener("click",function(){
+            console.log("denna tas bort"+data.Id);
+            
+            worklists.deleteworkexperience(data.Id);
+            details.remove();
+            
+        });
+        details.appendChild(deletebutton);    
         experiencelist.appendChild(details);
 
     }

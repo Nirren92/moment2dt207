@@ -96,17 +96,17 @@ app.post('/api/addworkexperience',cors(), async (req, res) => {
 
 
 //tar bort erfarenhet
-app.post('/api/removeworkexperience',cors(), async (req, res) => {
+app.post('/api/removeworkexperience/:exeperienceID',cors(), async (req, res) => {
     try
     {
-       const { code } = req.body;
-       const result = await client.query("DELETE FROM workexperience WHERE code=$1",[code])  
+       const { exeperienceID } =  req.params;
+       const result = await client.query("DELETE FROM workexperience WHERE id=$1",[exeperienceID])  
     }
     catch (err)
     {
         console.error("nåtgick fel vid sql fråga:"+err)
     }
-    res.redirect('/');
+   
 });
 
 

@@ -8,6 +8,7 @@ export class WorkExperienceList
 
     constructor()
     {
+        //måste säkerställa att data blivit uppladdat till objekt. 
         this.Loaded = this.Initdatabasedata();
     }
 
@@ -16,9 +17,9 @@ export class WorkExperienceList
     {
         try {
             const response = await fetch("http://localhost:3000/api/workexperience");
-           let temparray = await response.json();
+            let temparray = await response.json();
             //Skapar objekt av datan. 
-           this.WorkExperiencearray = temparray.map(element => new workexperience(
+            this.WorkExperiencearray = temparray.map(element => new workexperience(
             element.id,
             element.companyname,
             element.jobtitle,
@@ -37,6 +38,21 @@ export class WorkExperienceList
     }
 
 
+     async deleteworkexperience(id:number)
+    {
+        try {
+            const response = await fetch("http://localhost:3000/api/removeworkexperience/"+id, {
+                            method: 'POST'
+                        });
+            let temparray = await response.json();
+            console.log("data är raderad",this.WorkExperiencearray);
+        }
+        catch(err)
+        {
+            console.error("nåt gick fel vid hämtning av data:",err);        
+        }
+    }
+
     private addworkexperience()
     {
 
@@ -44,6 +60,7 @@ export class WorkExperienceList
 
     async getalldata(): Promise<workexperience[]>
     {
+        //felhantering?!?!?!?!
         await this.Loaded;
         console.log("array",this.WorkExperiencearray);
         return this.WorkExperiencearray;
