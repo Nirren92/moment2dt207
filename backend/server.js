@@ -75,7 +75,7 @@ app.post('/api/updateworkexperience',cors(), async (req, res) => {
     {
         console.error("Nnåtgick fel vid sql fråga:"+err)
     }
-    res.redirect('/');
+    
 });
 
 
@@ -83,14 +83,15 @@ app.post('/api/updateworkexperience',cors(), async (req, res) => {
 app.post('/api/addworkexperience',cors(), async (req, res) => {
     try
     {
+        
        const { companyname, jobtitle,location,startdate,enddate,description } = req.body;
-       const result = await client.query("INSERT INTO workexperience (companyname, jobtitle, location, startdate, enddate, description) VALUES($1,$2,$3,$5,$6)",[companyname, jobtitle,location,startdate,enddate,description])  
+       const result = await client.query("INSERT INTO workexperience (companyname, jobtitle, location, startdate, enddate, description) VALUES($1,$2,$3,$4,$5,$6)",[companyname, jobtitle,location,startdate,enddate,description])  
     }
     catch (err)
     {
         console.error("Nnåtgick fel vid sql fråga:"+err)
     }
-    res.redirect('/');
+
 });
 
 

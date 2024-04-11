@@ -44,18 +44,31 @@ export class WorkExperienceList
             const response = await fetch("http://localhost:3000/api/removeworkexperience/"+id, {
                             method: 'POST'
                         });
-            let temparray = await response.json();
             console.log("data är raderad",this.WorkExperiencearray);
         }
         catch(err)
         {
-            console.error("nåt gick fel vid hämtning av data:",err);        
+            console.error("nåt gick fel vid borttagning av data:",err);        
         }
     }
 
-    private addworkexperience()
+    async addworkexperience(data:workexperience)
     {
-
+        try {
+            const response = await fetch("http://localhost:3000/api/addworkexperience", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type':'application/json'
+                            },
+                            body: JSON.stringify(data),
+                        });
+            
+            
+        }
+        catch(err)
+        {
+            console.error("nåt gick fel vid tillägg av data:",err);        
+        }
     }
 
     async getalldata(): Promise<workexperience[]>
