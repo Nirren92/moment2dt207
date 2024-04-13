@@ -54,7 +54,7 @@ app.get("/api/workexperience",cors(), async(req,res) =>{
             if(result.rows.length < 1)
             {
                 console.log("inga rader fanns.sätta nåt default värde?")
-                res.json(result.rows);
+                res.status(404).send('Ingen data i databasen');;
             }
             else
             {
@@ -69,6 +69,20 @@ app.post('/api/updateworkexperience',cors(), async (req, res) => {
     try
     {
        const { ID,companyname, jobtitle,location,startdate,enddate,description } = req.body;
+
+        //kontroll att det är inga nullvärden
+        if(!companyname || !jobtitle || !location || !startdate || !enddate)
+        {
+            console.log("indata tom/null");
+            return res.status(400).send('Indata är inkorrekt, fält'); 
+        }
+
+        //kontroll av datum
+        if(isNaN((new Date(startdate).getTime())) || isNaN((new Date(enddate).getTime())))
+        {
+        console.log("Datum inkorrekt");
+        return res.status(400).send('Datum i indata inkorrekt är inkorrekt, fält'); 
+        }
        const result = await client.query("UPDATE workexperience set companyname =$2, jobtitle=$3,location=$4,startdate=$5,enddate=$6, description=$7 WHERE code=$1",[ID,companyname, jobtitle,location,startdate,enddate,description])  
     }
     catch (err)
@@ -83,13 +97,29 @@ app.post('/api/updateworkexperience',cors(), async (req, res) => {
 app.post('/api/addworkexperience',cors(), async (req, res) => {
     try
     {
-        
        const { companyname, jobtitle,location,startdate,enddate,description } = req.body;
+     
+       //kontroll att det är inga nullvärden
+       if(!companyname || !jobtitle || !location || !startdate || !enddate)
+       {
+            console.log("indata tom/null");
+            return res.status(400).send('Indata är inkorrekt, fält'); 
+       }
+
+       //kontroll av datum
+       if(isNaN((new Date(startdate).getTime())) || isNaN((new Date(enddate).getTime())))
+       {
+        console.log("Datum inkorrekt");
+        return res.status(400).send('Datum i indata inkorrekt är inkorrekt, fält'); 
+       }
+
        const result = await client.query("INSERT INTO workexperience (companyname, jobtitle, location, startdate, enddate, description) VALUES($1,$2,$3,$4,$5,$6)",[companyname, jobtitle,location,startdate,enddate,description])  
+       res.status(201).send('Arbetslivserfarenhet tillagd');
     }
     catch (err)
     {
-        console.error("Nnåtgick fel vid sql fråga:"+err)
+        console.error("Nåtgick fel vid sql fråga:"+err);
+        res.status(500).send("Nåtgick fel vid sql fråga:"+err);
     }
 
 });

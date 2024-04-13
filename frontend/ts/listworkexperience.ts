@@ -62,7 +62,7 @@ export class WorkExperienceList
                             },
                             body: JSON.stringify(data),
                         });
-            
+            return response.ok;
             
         }
         catch(err)
