@@ -25,4 +25,4 @@ data har följande format:
     enddate:Date;
     description:string;
 
-
+All data som retuneras är av JSON format. 
