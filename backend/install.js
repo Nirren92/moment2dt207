@@ -53,9 +53,9 @@ CREATE TABLE workexperience(
 
 
 INSERT INTO workexperience (companyname, jobtitle, location, startdate, enddate, description) VALUES 
-('company1','kurs 1','sverige','2020-05-15','2021-05-15', 'det var roligt jobb'),
-('company2','kurs 2','sverige','2022-05-15','2021-05-15', 'det var roligt jobb'),
-('company3','kurs 3','sverige','2023-05-15','2021-05-15', 'det var roligt jobb');
+('company1','Projektledare','sverige','2020-05-15','2021-05-15', 'det var roligt jobb'),
+('company2','Tekniker','sverige','2022-05-15','2021-05-15', 'det var roligt jobb'),
+('company3','Operatör','sverige','2023-05-15','2021-05-15', 'det var roligt jobb');
 
 `);
 

@@ -62,12 +62,13 @@ export class WorkExperienceList
                             },
                             body: JSON.stringify(data),
                         });
-            return response.ok;
+            return response.status;
             
         }
         catch(err)
         {
-            console.error("nåt gick fel vid tillägg av data:",err);        
+            console.error("nåt gick fel vid tillägg av data:",err);
+            return null;        
         }
     }
 

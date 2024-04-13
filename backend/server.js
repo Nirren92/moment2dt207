@@ -58,7 +58,7 @@ app.get("/api/workexperience",cors(), async(req,res) =>{
             }
             else
             {
-                res.json(result.rows);
+                res.status(201).json(result.rows);
             }
         }
     });
@@ -84,6 +84,7 @@ app.post('/api/updateworkexperience',cors(), async (req, res) => {
         return res.status(400).send('Datum i indata inkorrekt är inkorrekt, fält'); 
         }
        const result = await client.query("UPDATE workexperience set companyname =$2, jobtitle=$3,location=$4,startdate=$5,enddate=$6, description=$7 WHERE code=$1",[ID,companyname, jobtitle,location,startdate,enddate,description])  
+       res.status(201).send('adderat data')
     }
     catch (err)
     {
@@ -132,10 +133,12 @@ app.post('/api/removeworkexperience/:exeperienceID',cors(), async (req, res) => 
     {
        const { exeperienceID } =  req.params;
        const result = await client.query("DELETE FROM workexperience WHERE id=$1",[exeperienceID])  
+       res.status(201).send('Arbetslivserfarenhet borttagen');
     }
     catch (err)
     {
         console.error("nåtgick fel vid sql fråga:"+err)
+        res.status(500).send('nåtgick fel vid sql fråga:'+err);
     }
    
 });

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/main.scss">
+    <script src="ts/main.ts" type="module"></script>
+<body>
+
+    <header>
+        <nav>
+            <a href="index.html">Start</a>
+            <a href="add.html">addera <br>erfarenhet</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+
+
+
+
+<div class="container">
+    <h1>Arbetserfarenhet</h1>
+    <p style="text-align: center;" >Erfarenheter. skriv in nedan för att lägga till.
+        <Br>
+   
+    </p>
+
+    <form id="inputform" action="">
+        <label for="companyname">companyname</label>
+        <input type="text" id="companyname" name="companyname" >
+        <br>
+        <label for="jobtitle">jobtitle</label>
+        <input type="text" id="jobtitle" name="jobtitle" required>
+        <br>
+        <label for="location">location</label>
+        <input type="text" id="location" name="location" required>
+        <br>
+        <label for="startdate">startdate</label>
+        <input type="date" id="startdate" name="startdate" >
+        <br>
+        <label for="enddate">enddate</label>
+        <input type="date" id="enddate" name="enddate" required>
+        <br>
+        <label for="description">description</label>
+        <input type="text" id="description" name="description" required>
+        <br>
+        <button type="submit">Lägg till data</button>
+    </form>
+    
+
+
+    <div class="Container_Expereince" id="experiencecontainer">
+
+        <ul id="experiencelist"></ul>
+    </div>
+    
+
+</div>
+
+</body>
+</html>
