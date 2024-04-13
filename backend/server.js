@@ -2,8 +2,6 @@ const { render } = require("ejs");
 const {Client} = require("pg");
 require("dotenv").config();
 
-
-
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -34,13 +32,10 @@ client.connect((err) => {
     }
 });
 
-
 //Starta server
 app.listen(process.env.PORT, () =>{
     console.log("server startad");   
 });
-
-
 
 //inlagda erfarenheter som finns inlagda i systemet
 app.get("/api/workexperience",cors(), async(req,res) =>{
@@ -124,8 +119,6 @@ app.post('/api/addworkexperience',cors(), async (req, res) => {
     }
 
 });
-
-
 
 //tar bort erfarenhet
 app.post('/api/removeworkexperience/:exeperienceID',cors(), async (req, res) => {

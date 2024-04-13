@@ -16,3 +16,13 @@ Detta API tillåter användaren att ta bort en erfarenhet från databasen. exper
 
 
 
+data har följande format:
+    id:number;
+    companyname:string;
+    jobtitle:string;
+    location:string;
+    startdate:Date;
+    enddate:Date;
+    description:string;
+
+

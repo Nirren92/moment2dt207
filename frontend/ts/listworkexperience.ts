@@ -2,7 +2,6 @@ import { workexperience} from "./workexperience";
 
 export class WorkExperienceList
 {
-
     private WorkExperiencearray:workexperience[] = [];
     private Loaded: Promise<void>;
 
@@ -16,7 +15,7 @@ export class WorkExperienceList
     private async Initdatabasedata()
     {
         try {
-            const response = await fetch("http://localhost:3000/api/workexperience");
+            const response = await fetch("https://moment2dt207.onrender.com/api/workexperience");
             let temparray = await response.json();
             //Skapar objekt av datan. 
             this.WorkExperiencearray = temparray.map(element => new workexperience(
@@ -37,11 +36,10 @@ export class WorkExperienceList
         }
     }
 
-
      async deleteworkexperience(id:number)
     {
         try {
-            const response = await fetch("http://localhost:3000/api/removeworkexperience/"+id, {
+            const response = await fetch("https://moment2dt207.onrender.com/api/removeworkexperience/"+id, {
                             method: 'POST'
                         });
             console.log("data är raderad",this.WorkExperiencearray);
@@ -55,7 +53,7 @@ export class WorkExperienceList
     async addworkexperience(data:workexperience)
     {
         try {
-            const response = await fetch("http://localhost:3000/api/addworkexperience", {
+            const response = await fetch("https://moment2dt207.onrender.com/api/addworkexperience", {
                             method: 'POST',
                             headers: {
                                 'Content-Type':'application/json'
@@ -72,12 +70,21 @@ export class WorkExperienceList
         }
     }
 
+
+    //denna felhantering här är inte optimal.skulle typ vilja returnera null
     async getalldata(): Promise<workexperience[]>
     {
-        //felhantering?!?!?!?!
-        await this.Loaded;
-        console.log("array",this.WorkExperiencearray);
-        return this.WorkExperiencearray;
+        try {
+            //väntar på att construktor först har hunnit med att ladda
+            await this.Loaded;
+            console.log("array",this.WorkExperiencearray);
+            return this.WorkExperiencearray;
+        }
+        catch(err)
+        {
+            console.error("nåt gick fel vid tillägg av data:",err);
+            return this.WorkExperiencearray;        
+        }
     }
     
 
