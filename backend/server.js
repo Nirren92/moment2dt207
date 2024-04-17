@@ -121,7 +121,7 @@ app.post('/api/addworkexperience',cors(), async (req, res) => {
 });
 
 //tar bort erfarenhet
-app.post('/api/removeworkexperience/:exeperienceID',cors(), async (req, res) => {
+app.delete('/api/removeworkexperience/:exeperienceID',cors(), async (req, res) => {
     try
     {
        const { exeperienceID } =  req.params;

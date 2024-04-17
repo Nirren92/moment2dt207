@@ -40,7 +40,7 @@ export class WorkExperienceList
     {
         try {
             const response = await fetch("https://moment2dt207.onrender.com/api/removeworkexperience/"+id, {
-                            method: 'POST'
+                            method: 'DELETE'
                         });
             console.log("data är raderad",this.WorkExperiencearray);
         }
