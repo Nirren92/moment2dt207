@@ -53,15 +53,29 @@ export class WorkExperienceList
     async addworkexperience(data:workexperience)
     {
         try {
-            const response = await fetch("https://moment2dt207.onrender.com/api/addworkexperience", {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type':'application/json'
-                            },
-                            body: JSON.stringify(data),
-                        });
-            return response.status;
-            
+            //kontrollerar att indata finns med 
+            const { companyname, jobtitle,location,startdate,enddate,description } = data;
+            if(!companyname || !jobtitle || !location || !startdate || !enddate || !description)
+                {   
+                    console.error("Indata saknas.");
+                }
+            else if(isNaN((new Date(startdate).getTime())) || isNaN((new Date(enddate).getTime())))
+                {
+                console.log("Datum inkorrekt");
+                }
+            else
+            {
+                console.log("com"+companyname); 
+                const response = await fetch("https://moment2dt207.onrender.com/api/addworkexperience", {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type':'application/json'
+                                },
+                                body: JSON.stringify(data),
+                            });
+                return response.status;
+                
+            }
         }
         catch(err)
         {
