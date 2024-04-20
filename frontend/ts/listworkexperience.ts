@@ -11,28 +11,22 @@ export class WorkExperienceList
         this.Loaded = this.Initdatabasedata();
     }
 
-    private APIURL = "http://localhost:3000";
-
     //Funktion för att hämta all sparad data
     private async Initdatabasedata()
     {
         try {
-            const response = await fetch(this.APIURL+"/api/workexperience");
+            const response = await fetch("https://moment2dt207.onrender.com/api/workexperience");
             let temparray = await response.json();
             //Skapar objekt av datan. 
             this.WorkExperiencearray = temparray.map(element => new workexperience(
-            element._id,
-            element.companyName,
-            element.jobTitle,
+            element.id,
+            element.companyname,
+            element.jobtitle,
             element.location,
-            new Date(element.startDate),  
-            new Date(element.endDate),
+            element.startdate,
+            element.enddate,
             element.description
-
-
-
             ));
-            console.log("datum"+temparray[0].startdate);
 
             console.log("data är hämtad",this.WorkExperiencearray);
         }
@@ -42,10 +36,10 @@ export class WorkExperienceList
         }
     }
 
-     async deleteworkexperience(id:string)
+     async deleteworkexperience(id:number)
     {
         try {
-            const response = await fetch(this.APIURL+"/api/removeworkexperience/"+id, {
+            const response = await fetch("https://moment2dt207.onrender.com/api/removeworkexperience/"+id, {
                             method: 'DELETE'
                         });
             console.log("data är raderad",this.WorkExperiencearray);
@@ -72,7 +66,7 @@ export class WorkExperienceList
             else
             {
                 console.log("com"+companyname); 
-                const response = await fetch(this.APIURL+"/api/addworkexperience", {
+                const response = await fetch("https://moment2dt207.onrender.com/api/addworkexperience", {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type':'application/json'

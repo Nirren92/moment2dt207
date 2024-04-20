@@ -1,7 +1,7 @@
 //klass för att hantera workexperience data
 export interface interfaceworkexperience 
 {
-    id:string;
+    id:number;
     companyname:string;
     jobtitle:string;
     location:string;
@@ -12,7 +12,7 @@ export interface interfaceworkexperience
 
 export class workexperience implements interfaceworkexperience
 {
-    id:string;
+    id:number;
     companyname:string;
     jobtitle:string;
     location:string;
@@ -20,7 +20,7 @@ export class workexperience implements interfaceworkexperience
     enddate:Date;
     description:string;
     
-    constructor( id:string,companyname:string,jobtitle:string,location:string,startdate:Date,enddate:Date,description:string)
+    constructor( id:number,companyname:string,jobtitle:string,location:string,startdate:Date,enddate:Date,description:string)
     {
         this.id = id;
         this.companyname = companyname;
