@@ -14,7 +14,7 @@ kontroll av data görs och ett lyckat anrop returnerar status 201.
 /api/removeworkexperience/:experienceID
 Detta API tillåter användaren att ta bort en erfarenhet från databasen. experienceID anger vilken erfarenhet som ska tas bort. 
 
-
+ver
 
 data har följande format:
     id:number;
