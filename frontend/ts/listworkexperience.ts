@@ -28,13 +28,7 @@ export class WorkExperienceList
             new Date(element.startDate),  
             new Date(element.endDate),
             element.description
-
-
-
             ));
-            console.log("datum"+temparray[0].startdate);
-
-            console.log("data är hämtad",this.WorkExperiencearray);
         }
         catch(err)
         {
@@ -48,7 +42,6 @@ export class WorkExperienceList
             const response = await fetch(this.APIURL+"/api/removeworkexperience/"+id, {
                             method: 'DELETE'
                         });
-            console.log("data är raderad",this.WorkExperiencearray);
         }
         catch(err)
         {
@@ -67,11 +60,10 @@ export class WorkExperienceList
                 }
             else if(isNaN((new Date(startdate).getTime())) || isNaN((new Date(enddate).getTime())))
                 {
-                console.log("Datum inkorrekt");
+                console.error("Datum inkorrekt");
                 }
             else
             {
-                console.log("com"+companyname); 
                 const response = await fetch(this.APIURL+"/api/addworkexperience", {
                                 method: 'POST',
                                 headers: {
@@ -106,11 +98,7 @@ export class WorkExperienceList
             return this.WorkExperiencearray;        
         }
     }
-    
-
-
 }
-
 
 async function get_data(url_IN)
 {
