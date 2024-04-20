@@ -60,7 +60,7 @@ app.get("/api/workexperience",cors(), async(req,res) =>{
 });
 
 //Ändrar data i erfarenhet. detta kommer från en form datan som ska uppdateras
-app.put('/api/updateworkexperience',cors(), async (req, res) => {
+app.update('/api/updateworkexperience',cors(), async (req, res) => {
     try
     {
        const { ID,companyname, jobtitle,location,startdate,enddate,description } = req.body;
