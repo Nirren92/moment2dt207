@@ -8,29 +8,29 @@ app.use(express.json());
 const cors = require('cors');
 app.use(cors());
 
+const uri = process.env.URLDB;
 
-//hämtar anslutningsdata från env
-const client = new Client({
-    host:process.env.DB_HOST,
-    port:process.env.DB_PORT,
-    user:process.env.DB_USERNAME,
-    password:process.env.DB_PASSWORD,
-    database:process.env.DB_DATABASE,
-    ssl:{
-        rejectUnauthorized: false,
-    },
-}); 
-//ansluter
-client.connect((err) => {
-    if(err)
-    {
-        console.error("gick inte att ansluta.", err);
-    }
-    else
-    {
-        console.log("Ansluten till datbas. ");
-    }
-});
+const mongoose = require("mongoose");
+const { ObjectId } = require("mongodb");
+
+
+mongoose
+    .connect(uri)
+    .then(() => {console.log("Ansluten till mongodb");})
+    .catch((error)=> {console.error("nåt gick fel"+error);})
+
+    
+    
+    const WorkExperienceSchema = mongoose.Schema({
+        companyName: String,
+        jobTitle: String,
+        location: String,
+        startDate: Date,
+        endDate: Date,
+        description: String
+    })
+
+    const WorkExperience = mongoose.model('WorkExperience', WorkExperienceSchema);
 
 //Starta server
 app.listen(process.env.PORT, () =>{
@@ -39,51 +39,62 @@ app.listen(process.env.PORT, () =>{
 
 //inlagda erfarenheter som finns inlagda i systemet
 app.get("/api/workexperience",cors(), async(req,res) =>{
-    client.query("SELECT * FROM workexperience", (err, result) =>{
-        if(err)
-        {
-            console.log("nåtgick fel vid sql fråga"+err);
-        }
-        else
-        {
-            if(result.rows.length < 1)
-            {
-                console.log("inga rader fanns.sätta nåt default värde?")
-                res.status(404).send('Ingen data i databasen');;
-            }
-            else
-            {
-                res.status(201).json(result.rows);
-            }
-        }
+   
+   
+    WorkExperience.find({})
+    .then(documents => {
+        console.log(documents);
+        res.status(201).json(documents);
+    })
+    .catch(err => {
+        console.error("Serverfel:", err);
     });
+
+
 });
 
 //Ändrar data i erfarenhet. detta kommer från en form datan som ska uppdateras
-app.update('/api/updateworkexperience',cors(), async (req, res) => {
+app.put('/api/updateworkexperience/:exeperienceID',cors(), async (req, res) => {
     try
     {
-       const { ID,companyname, jobtitle,location,startdate,enddate,description } = req.body;
-
-        //kontroll att det är inga nullvärden
-        if(!companyname || !jobtitle || !location || !startdate || !enddate)
-        {
+       const { companyname, jobtitle,location,startdate,enddate,description } = req.body;
+     
+       //kontroll att det är inga nullvärden
+       if(!companyname || !jobtitle || !location || !startdate || !enddate)
+       {
             console.log("indata tom/null");
-            return res.status(400).send('Indata är inkorrekt, fält'); 
-        }
+            return res.status(400).send('Indata är inkorrekt'); 
+       }
 
-        //kontroll av datum
-        if(isNaN((new Date(startdate).getTime())) || isNaN((new Date(enddate).getTime())))
-        {
+       //kontroll av datum
+       if(isNaN((new Date(startdate).getTime())) || isNaN((new Date(enddate).getTime())))
+       {
         console.log("Datum inkorrekt");
-        return res.status(400).send('Datum i indata inkorrekt är inkorrekt, fält'); 
-        }
-       const result = await client.query("UPDATE workexperience set companyname =$2, jobtitle=$3,location=$4,startdate=$5,enddate=$6, description=$7 WHERE code=$1",[ID,companyname, jobtitle,location,startdate,enddate,description])  
-       res.status(201).send('adderat data')
+        return res.status(400).send('Datum i indata inkorrekt är inkorrekt'); 
+       }
+
+
+       const changeExp = new WorkExperience({
+            companyName: companyname,
+            jobTitle: jobtitle,
+            location: location,
+            startDate: new Date(startdate),
+            endDate: new Date(enddate),
+            description: description
+        });
+        
+       console.log("Ändrar i denna",changeExp);
+       const result = await changeExp.findByIdAndUpdate(req.params.exeperienceID);
+       if(result)
+       res.status(201).send('Arbetslivserfarenhet ändrad');
+        
+       else
+        res.status(404).send("Erfarenheten hittades inte");
     }
     catch (err)
     {
-        console.error("Nnåtgick fel vid sql fråga:"+err)
+        console.error("Serverfel:", err);
+        res.status(500).send("Nåtgick fel vid sql fråga:"+err);
     }
     
 });
@@ -99,7 +110,7 @@ app.post('/api/addworkexperience',cors(), async (req, res) => {
        if(!companyname || !jobtitle || !location || !startdate || !enddate)
        {
             console.log("indata tom/null");
-            return res.status(400).send('Indata är inkorrekt, fält'); 
+            return res.status(400).send('Indata är inkorrekt'); 
        }
 
        //kontroll av datum
@@ -109,29 +120,41 @@ app.post('/api/addworkexperience',cors(), async (req, res) => {
         return res.status(400).send('Datum i indata inkorrekt är inkorrekt, fält'); 
        }
 
-       const result = await client.query("INSERT INTO workexperience (companyname, jobtitle, location, startdate, enddate, description) VALUES($1,$2,$3,$4,$5,$6)",[companyname, jobtitle,location,startdate,enddate,description])  
+
+       const newExp = new WorkExperience({
+            companyName: companyname,
+            jobTitle: jobtitle,
+            location: location,
+            startDate: new Date(startdate),
+            endDate: new Date(enddate),
+            description: description
+        });
+
+       console.log("Tillagd",newExp);
+       await newExp.save();
        res.status(201).send('Arbetslivserfarenhet tillagd');
     }
     catch (err)
     {
-        console.error("Nåtgick fel vid sql fråga:"+err);
-        res.status(500).send("Nåtgick fel vid sql fråga:"+err);
+        console.error("Serverfel:", err);
+        res.status(500).send("Serverfel:"+err);
     }
 
 });
 
 //tar bort erfarenhet
 app.delete('/api/removeworkexperience/:exeperienceID',cors(), async (req, res) => {
-    try
-    {
-       const { exeperienceID } =  req.params;
-       const result = await client.query("DELETE FROM workexperience WHERE id=$1",[exeperienceID])  
-       res.status(201).send('Arbetslivserfarenhet borttagen');
-    }
-    catch (err)
-    {
-        console.error("nåtgick fel vid sql fråga:"+err)
-        res.status(500).send('nåtgick fel vid sql fråga:'+err);
+    try {
+        const result = await WorkExperience.findByIdAndDelete(req.params.exeperienceID);
+        if (result) {
+            console.log("Borttagen: " + req.params.exeperienceID);
+            res.send("Erfarenheten borttagen.");
+        } else {
+            res.status(404).send("Erfarenheten hittades inte");
+        }
+    } catch (err) {
+        console.error("Serverfel:", err);
+        res.status(500).send( "Serverfel");
     }
    
 });
