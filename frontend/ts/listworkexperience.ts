@@ -11,7 +11,7 @@ export class WorkExperienceList
         this.Loaded = this.Initdatabasedata();
     }
 
-    private APIURL = "http://localhost:3000";
+    private APIURL = "https://moment2dt207-2.onrender.com";
 
     //Funktion för att hämta all sparad data
     private async Initdatabasedata()
