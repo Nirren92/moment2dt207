@@ -86,7 +86,7 @@ app.put('/api/updateworkexperience/:exeperienceID',cors(), async (req, res) => {
        console.log("Ändrar i denna",changeExp);
        const result = await changeExp.findByIdAndUpdate(req.params.exeperienceID);
        if(result)
-       res.status(201).send('Arbetslivserfarenhet ändrad');
+       res.status(201).send('Erfarenheten ändrad');
         
        else
         res.status(404).send("Erfarenheten hittades inte");
@@ -117,7 +117,7 @@ app.post('/api/addworkexperience',cors(), async (req, res) => {
        if(isNaN((new Date(startdate).getTime())) || isNaN((new Date(enddate).getTime())))
        {
         console.log("Datum inkorrekt");
-        return res.status(400).send('Datum i indata inkorrekt är inkorrekt, fält'); 
+        return res.status(400).send('Datum i indata inkorrekt är inkorrekt'); 
        }
 
 
@@ -129,8 +129,6 @@ app.post('/api/addworkexperience',cors(), async (req, res) => {
             endDate: new Date(enddate),
             description: description
         });
-
-       console.log("Tillagd",newExp);
        await newExp.save();
        res.status(201).send('Arbetslivserfarenhet tillagd');
     }
