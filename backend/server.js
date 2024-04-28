@@ -70,7 +70,7 @@ app.put('/api/updateworkexperience/:exeperienceID',cors(), async (req, res) => {
        if(isNaN((new Date(startdate).getTime())) || isNaN((new Date(enddate).getTime())))
        {
         console.log("Datum inkorrekt");
-        return res.status(400).send('Datum i indata inkorrekt är inkorrekt'); 
+        return res.status(400).send('Datum i indata inkorrekt'); 
        }
 
 
