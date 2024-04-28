@@ -37,7 +37,7 @@ app.listen(process.env.PORT, () =>{
     console.log("server startad");   
 });
 
-//inlagda erfarenheter som finns inlagda i systemet
+//hämtar erfarenhet
 app.get("/api/workexperience",cors(), async(req,res) =>{
    
    
@@ -53,7 +53,7 @@ app.get("/api/workexperience",cors(), async(req,res) =>{
 
 });
 
-//Ändrar data i erfarenhet. detta kommer från en form datan som ska uppdateras
+//Ändrar data i erfarenhet
 app.put('/api/updateworkexperience/:exeperienceID',cors(), async (req, res) => {
     try
     {
@@ -94,13 +94,13 @@ app.put('/api/updateworkexperience/:exeperienceID',cors(), async (req, res) => {
     catch (err)
     {
         console.error("Serverfel:", err);
-        res.status(500).send("Nåtgick fel vid sql fråga:"+err);
+        res.status(500).send("Nåtgick fel vid server fråga:"+err);
     }
     
 });
 
 
-//lägger till erfarenhet. detta kommer från en form datan som ska uppdateras
+//lägger till erfarenhet
 app.post('/api/addworkexperience',cors(), async (req, res) => {
     try
     {
@@ -117,7 +117,7 @@ app.post('/api/addworkexperience',cors(), async (req, res) => {
        if(isNaN((new Date(startdate).getTime())) || isNaN((new Date(enddate).getTime())))
        {
         console.log("Datum inkorrekt");
-        return res.status(400).send('Datum i indata inkorrekt är inkorrekt'); 
+        return res.status(400).send('Datum i indata inkorrekt'); 
        }
 
 
